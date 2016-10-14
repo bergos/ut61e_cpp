@@ -13,10 +13,9 @@ CC=gcc
 CXX=g++
 CPPOBJS=./he2325u.o
 OBJS=$(COBJS) $(CPPOBJS)
-CFLAGS+=-I./hidapi/hidapi -Wall -g -c `pkg-config libusb-1.0 --cflags`
+CFLAGS+=-Wall -g -c
 ifeq ($(UNAME), Linux)
-COBJS=./hidapi/linux/hid.o
-LIBS=`pkg-config libusb-1.0 libudev --libs`
+LIBS=-lhidapi-libusb
 endif
 ifeq ($(UNAME), Darwin)
 COBJS=./hidapi/mac/hid.o
@@ -26,9 +25,6 @@ endif
 
 he2325u: $(OBJS)
 	g++ -Wall -g $^ $(LIBS) -o he2325u
-
-$(COBJS): %.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
 
 $(CPPOBJS): %.o: %.cpp
 	$(CXX) $(CFLAGS) $< -o $@
